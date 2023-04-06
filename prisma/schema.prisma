@@ -1,0 +1,23 @@
+// defining the client in prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// defining the datasource or database where we provide the url and the provider
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+// creating the model for the user
+model User{
+    id Int @id @default(autoincrement())
+    name String
+    age Int
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+// after creating a model, we need to run yarn or npx prisma generate to tell client to use this kind of schema
+// yarn prisma migrate dev --name init --create-only this command will generate the tables/fields in the database as in the model
