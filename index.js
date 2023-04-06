@@ -17,7 +17,7 @@ app.post("/", async (req, res) => {
   const data = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
-    age: Number(req.body.age),
+    age: req.body.age,
   };
   const createUser = await prisma.user.create({ data });
   res.json({ success: true, createUser });
@@ -27,7 +27,7 @@ app.post("/", async (req, res) => {
 app.get("/:id", async (req, res) => {
   const user = await prisma.user.findUnique({
     where: {
-      id: Number(req.params.id),
+      id: req.params.id,
     },
   });
   res.json(user);
@@ -39,7 +39,7 @@ app.put("/:id", async (req, res) => {
   const newAge = req.body.age;
   const user = await prisma.user.update({
     where: {
-      id: Number(req.params.id),
+      id: req.params.id,
     },
     data: {
       age: newAge,
@@ -51,7 +51,7 @@ app.put("/:id", async (req, res) => {
 // deleting a user
 app.delete("/:id", async (req, res) => {
     const user = await prisma.user.delete({where:{
-        id:Number(req.params.id)
+        id:req.params.id
     }})
     res.json(user);
   });
