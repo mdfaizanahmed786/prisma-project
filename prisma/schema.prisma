@@ -14,26 +14,38 @@ datasource db {
 model User {
   // id Int @id @default(autoincrement()) avoid this
   id        String   @id @default(cuid())
+ 
   firstName String
   lastName  String
   age       Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  house     Houses[]
+  // we @relation to define the relation between the models and "HouseOwner" is the label for uniquely identifying the relation
+  house     House[]  @relation("HouseOwner")
+  builtBy     House[]  @relation("HouseBuilder")
 }
 
-model Houses {
+model House {
   // id should have always string property for extra security
   id      String @id @default(cuid())
-  house   User   @relation(fields: [houseId], references: [id])
-  houseId String
+  house   User   @relation("HouseOwner",fields: [userId], references: [id])
+  userId String
+   address   String   @unique
+  // below is for optional field
+  wifiPassword String?
+  builtBy User @relation("HouseBuilder",fields: [builtById], references: [id])
+  builtById String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // indexes are used to make the search faster
-  @@index([houseId])
+  @@index([userId])
+  @@index([builtById])
 }
 
 // after creating a model, we need to run yarn or npx prisma generate to tell client to use this kind of schema
 // yarn prisma db push :  this command will generate the tables/fields in the database as in the model
+// yarn prisma generate :to apply changes locally
 // yarn prisma studio : this command will open the prisma studio where we can see the tables and the data in the tables
 // yarn prisma format : this command will format the schema.prisma file
 
