@@ -13,11 +13,12 @@ datasource db {
 // creating the model for the user
 model User{
     id Int @id @default(autoincrement())
-    name String
+    firstName String
+    lastName String
     age Int
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }
 
 // after creating a model, we need to run yarn or npx prisma generate to tell client to use this kind of schema
-// yarn prisma migrate dev --name init --create-only this command will generate the tables/fields in the database as in the model
+// yarn prisma db push :  this command will generate the tables/fields in the database as in the model
